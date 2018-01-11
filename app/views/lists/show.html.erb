@@ -1,0 +1,7 @@
+<%= @list.name %>
+<%= @list.due_date %>
+<%= simple_format(@list.note) %>
+<%= image_tag @list.image.url, size: "140x140", class: "img-thumbnail" %>
+
+
+<p><%= link_to 'Back to list', lists_path %></p>
