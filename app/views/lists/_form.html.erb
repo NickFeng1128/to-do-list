@@ -1,4 +1,3 @@
-
 <div class="form container">  
   <%= form_for @list do |f| %>
     <div class="form-group">
@@ -22,11 +21,11 @@
     </div>
 
     <div class="form-group">
-      <%= f.submit "Save", class: "btn btn-default" %>
+      <%= f.submit "Save", method: :new,class: "btn btn-default" %>
     </div>
 
     <div class="form-group">
-      <%= link_to "List",lists_path, class: "btn btn-default" %>
+      <%= link_to "Back to List",lists_path, class: "btn btn-default" %>
     </div>
   <% end %>
 </div>
