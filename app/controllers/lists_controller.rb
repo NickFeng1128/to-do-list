@@ -1,5 +1,5 @@
 class ListsController < ApplicationController
-  before_action :set_list, :only => [:show, :edit, :update, :destroy, :done]
+  before_action :set_list, :only => [:show, :edit, :update, :destroy, :complete]
   
   def index
     @lists = List.all
@@ -15,28 +15,29 @@ class ListsController < ApplicationController
       @list.save
       redirect_to lists_url
     else
-      render :action => :new
+      render :new
     end
   end
 
   def update
-    if 
-      @list.update_attributes(list_params)
-      redirect_to list_path(@list)
+    if @list.update_attributes(list_params)
+      redirect_to lists_path(@list)
     else
-      render :action => :edit
+      render :edit
     end
+  end
+
+  def complete
+    if @list.completed == false
+      @list.update_attribute(:completed, true)
+    else
+      @list.update_attribute(:completed, false)
+    end
+    redirect_to lists_path(@list)
   end
 
   def destroy
     @list.destroy
-
-    redirect_to lists_url
-  end
-
-  def done
-    @list.destroy
-
     redirect_to lists_url
   end
 
@@ -48,8 +49,7 @@ class ListsController < ApplicationController
   end
 
   def list_params
-    params.require(:list).permit(:due_date, :name, :note, :image)
+    params.require(:list).permit(:due_date, :name, :note, :image, :completed)
+
   end
-
-
 end

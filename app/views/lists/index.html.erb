@@ -1,20 +1,85 @@
+<div class="container">
+  <h1>To Do List</h1>
+  <table class="table table-striped table-condensed">
+    <thead>
+      <th>Done</th>
+      <th>Due Date</th>
+      <th>Name</th>
+      <th>Show</th>
+      <th>Edit</th>
+      <th>Destroy</th>
+    </thead>
+    <tbody>
+      <% @lists.each do |list|%>
+        <tr>
+            
+          <% if list.completed %>
+            <td>
+              <%= link_to complete_list_path(list), method: :patch do %>
+                <span class="glyphicon glyphicon-check"></span>
+              <% end %>
+            </td>
+          <% else %>
+            <td>
+              <%= link_to complete_list_path(list), method: :patch do %>
+                <span class="glyphicon glyphicon-unchecked"></span>
+              <% end %>
+            </td>     
+          <% end %>
+            
+          <td><%= list.due_date %></td>
+            
+          <td><%= list.name %></td>
+            
+          <td>
+            <%= link_to list_path(list) do %>
+              <span class="glyphicon glyphicon-eye-open"></span>
+            <% end %>
+          </td>
 
-<table class="table table-striped table-condensed">
-  <% @lists.each do |list|%>
-    <tr>
-      <td>
-        <div class="checkbox">
-          <label><input type="checkbox", value=" "></label>
-        </div>
-      </td>
-      <td><%= list.due_date %></td>
-      <td><%= list.name %></td>
-      <td><%= link_to 'Show', list_path(list) %></td>
-      <td><%= link_to 'Edit', edit_list_path(list) %></td>
-      <td><%= link_to 'Destroy', list_path(list), method: :delete, data:{ confirm: "Are yuo sure? "} %></td>
-    </tr>
+          <td>
+            <%= link_to edit_list_path(list) do %>
+              <span class="glyphicon glyphicon-edit"></span>
+            <% end %>
+          </td>
+            
+          <% if Time.now.to_date <= list.due_date %>
+            <td>
+               <%= link_to list_path(list), method: :delete, data:{ confirm: "Are you sure?" } do %>
+                  <span class="glyphicon glyphicon-trash"></span>
+              <% end %>
+            </td>
+          <% else %>
+            <td>
+              <span class="glyphicon glyphicon-trash"></span>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 100px" class="col-sm-offset-2 col-sm-8">
+    <%= form_for @lists.build do |f| %>
+      <div class="form-group">
+        <%= f.label :name, "Name" %>
+        <%= f.text_field :name, class: "form-control" %>  
+      </div>
+      <div class="form-group">
+        <%= f.label :due_date, "Due date" %>
+        <%= f.text_field :due_date, class: "form-control" %>
+      </div>    
+      <div class="form-group">
+        <%= f.label :note, "Note" %>
+        <%= f.text_area :note, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :image, 'Image' %>
+        <%= f.file_field :image %>
+      </div>
+      <div class="form-group">
+        <%= f.submit "Create", class: "btn btn-default" %> 
+      </div>
     <% end %>
-</table>
-
-<%= link_to ' New Item ', new_list_path %>
-
+  </div>
+</div>
