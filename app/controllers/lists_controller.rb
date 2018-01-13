@@ -2,7 +2,10 @@ class ListsController < ApplicationController
   before_action :set_list, :only => [:show, :edit, :update, :destroy, :complete]
   
   def index
-    @lists = List.all
+    @lists = List.all.order(due_date: :desc)
+  # 大到小（新到舊）  
+  # @lists = List.all.order(due_date: :asc)
+  # 小到大（舊到新）
   end
 
   def new
